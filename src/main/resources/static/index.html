@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduTrack | Training Management Portal</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">E</div>
+
+            <div>
+                <h1>EduTrack</h1>
+                <span>Training Portal</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="#" class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▣</span>
+                Courses
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▤</span>
+                Batches
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">◉</span>
+                Users
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                System Online
+            </div>
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">TRAINING MANAGEMENT</p>
+                <h2>Dashboard</h2>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar">A</div>
+
+                <div>
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="welcome-section">
+
+                <div>
+                    <p class="eyebrow">WELCOME TO EDUTRACK</p>
+
+                    <h3>
+                        Training management,
+                        <span>simplified.</span>
+                    </h3>
+
+                    <p class="welcome-text">
+                        Manage courses, trainers, batches and trainee
+                        learning progress from one centralized platform.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">▣</div>
+
+                    <div>
+                        <span class="stat-label">Active Courses</span>
+                        <strong>0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">▤</div>
+
+                    <div>
+                        <span class="stat-label">Active Batches</span>
+                        <strong>0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">◉</div>
+
+                    <div>
+                        <span class="stat-label">Trainees</span>
+                        <strong>0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">✓</div>
+
+                    <div>
+                        <span class="stat-label">System Status</span>
+                        <strong id="backendStatus">Checking...</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="eyebrow">SYSTEM</p>
+                            <h4>Backend Connection</h4>
+                        </div>
+
+                        <span id="connectionBadge" class="badge checking">
+                            Checking
+                        </span>
+
+                    </div>
+
+
+                    <div class="connection-content">
+
+                        <div class="connection-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <h4 id="connectionTitle">
+                                Connecting to EduTrack backend...
+                            </h4>
+
+                            <p id="connectionMessage">
+                                Please wait while we verify the server connection.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="eyebrow">MVP FOUNDATION</p>
+                            <h4>Project Modules</h4>
+                        </div>
+
+                    </div>
+
+
+                    <div class="module-list">
+
+                        <div class="module-item">
+                            <span>01</span>
+                            Authentication
+                        </div>
+
+                        <div class="module-item">
+                            <span>02</span>
+                            Course Management
+                        </div>
+
+                        <div class="module-item">
+                            <span>03</span>
+                            Batch Management
+                        </div>
+
+                        <div class="module-item">
+                            <span>04</span>
+                            Lecture & Quiz
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+<script src="/js/app.js"></script>
+
+</body>
+</html>
