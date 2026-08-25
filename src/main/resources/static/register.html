@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | EduTrack</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="brand">
+            <div class="brand-icon">E</div>
+            <span>EduTrack</span>
+        </div>
+
+        <h1>Create your account</h1>
+
+        <p class="subtitle">
+            Join EduTrack as a trainer or trainee.
+        </p>
+
+        <form id="registerForm">
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        placeholder="Minimum 6 characters"
+                        minlength="6"
+                        required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="role">
+                    Account Type
+                </label>
+
+                <select id="role" required>
+
+                    <option value="">
+                        Select account type
+                    </option>
+
+                    <option value="TRAINEE">
+                        Trainee
+                    </option>
+
+                    <option value="TRAINER">
+                        Trainer
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button type="submit" class="btn primary full">
+                Create Account
+            </button>
+
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <p class="switch-auth">
+            Already have an account?
+            <a href="/login.html">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+<script src="/js/register.js"></script>
+
+</body>
+
+</html>

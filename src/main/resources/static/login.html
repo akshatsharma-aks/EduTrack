@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | EduTrack</title>
+
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                E
+            </div>
+
+            <span>EduTrack</span>
+
+        </div>
+
+        <h1>Welcome back</h1>
+
+        <p class="subtitle">
+            Sign in to continue to EduTrack.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        required
+                >
+
+            </div>
+
+            <button
+                    type="submit"
+                    class="btn primary full">
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div id="message"
+             class="message">
+        </div>
+
+        <p class="switch-auth">
+
+            Don't have an account?
+
+            <a href="/register.html">
+                Register
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+<script src="/js/login.js"></script>
+
+</body>
+
+</html>
