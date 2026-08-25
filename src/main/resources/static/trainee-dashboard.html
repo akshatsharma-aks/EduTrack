@@ -41,37 +41,107 @@
 
     </header>
 
-    <main class="dashboard-content">
+    <main class="admin-content">
 
         <p class="eyebrow">
             TRAINEE PORTAL
         </p>
 
         <h1>
-            Welcome, <span id="userName"></span>
+            Welcome,
+            <span id="userName"></span>
         </h1>
 
-        <div class="dashboard-card">
+        <p class="admin-subtitle">
+            Find training batches and manage your enrollment.
+        </p>
 
-            <p class="card-label">
-                Current Role
-            </p>
+        <!-- AVAILABLE BATCHES -->
 
-            <h2 id="userRole">
-                TRAINEE
-            </h2>
+        <section class="admin-section">
 
-            <p>
-                You have trainee access to EduTrack.
-            </p>
+            <div class="section-heading">
 
-        </div>
+                <div>
+
+                    <h2>
+                        Available Batches
+                    </h2>
+
+                    <p>
+                        Request access to a training batch.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="availableBatches"
+                 class="data-list">
+
+            </div>
+
+        </section>
+
+        <!-- MY ENROLLMENTS -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        My Enrollment Requests
+                    </h2>
+
+                    <p>
+                        Track your enrollment status.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="myEnrollments"
+                 class="data-list">
+
+            </div>
+
+        </section>
+
+        <!-- MY APPROVED BATCHES -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        My Batches
+                    </h2>
+
+                    <p>
+                        Batches you have been approved to access.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="myBatches"
+                 class="data-list">
+
+            </div>
+
+        </section>
 
     </main>
 
 </div>
 
-<script src="/js/dashboard.js"></script>
+<script src="/js/trainee-dashboard.js"></script>
 
 </body>
 

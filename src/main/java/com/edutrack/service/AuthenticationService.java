@@ -3,6 +3,8 @@ package com.edutrack.service;
 import com.edutrack.dto.LoginRequest;
 import com.edutrack.dto.LoginResponse;
 import com.edutrack.entity.User;
+import com.edutrack.enums.Role;
+import com.edutrack.enums.TrainerStatus;
 import com.edutrack.repository.UserRepository;
 import com.edutrack.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,9 +42,25 @@ public class AuthenticationService {
                 );
 
         if (!user.isEnabled()) {
-
             throw new IllegalArgumentException(
                     "This account is disabled"
+            );
+        }
+
+        if (user.getRole() == Role.TRAINER
+                && user.getTrainerStatus()
+                != TrainerStatus.APPROVED) {
+
+            if (user.getTrainerStatus()
+                    == TrainerStatus.PENDING) {
+
+                throw new IllegalArgumentException(
+                        "Your trainer registration is pending admin approval"
+                );
+            }
+
+            throw new IllegalArgumentException(
+                    "Your trainer registration was declined"
             );
         }
 
@@ -53,7 +71,6 @@ public class AuthenticationService {
                 );
 
         if (!passwordMatches) {
-
             throw new IllegalArgumentException(
                     "Invalid email or password"
             );

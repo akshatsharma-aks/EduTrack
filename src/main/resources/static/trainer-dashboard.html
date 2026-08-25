@@ -41,7 +41,7 @@
 
     </header>
 
-    <main class="dashboard-content">
+    <main class="admin-content">
 
         <p class="eyebrow">
             TRAINER PORTAL
@@ -51,27 +51,52 @@
             Welcome, <span id="userName"></span>
         </h1>
 
-        <div class="dashboard-card">
+        <p class="admin-subtitle">
+            Your assigned training batches.
+        </p>
 
-            <p class="card-label">
-                Current Role
-            </p>
+        <section class="admin-section">
 
-            <h2 id="userRole">
-                TRAINER
+            <h2>
+                Assigned Batches
             </h2>
 
-            <p>
-                You have trainer access to EduTrack.
-            </p>
+            <div id="trainerBatches"
+                 class="data-list">
 
-        </div>
+            </div>
+
+        </section>
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Enrollment Requests
+                    </h2>
+
+                    <p>
+                        Review trainees requesting access to your batches.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="enrollmentRequests"
+                 class="data-list">
+
+            </div>
+
+        </section>
 
     </main>
 
 </div>
 
-<script src="/js/dashboard.js"></script>
+<script src="/js/trainer-dashboard.js"></script>
 
 </body>
 

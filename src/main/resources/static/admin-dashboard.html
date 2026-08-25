@@ -41,37 +41,366 @@
 
     </header>
 
-    <main class="dashboard-content">
+    <main class="admin-content">
 
-        <p class="eyebrow">
-            ADMIN PORTAL
-        </p>
+        <div class="admin-heading">
 
-        <h1>
-            Welcome, <span id="userName"></span>
-        </h1>
+            <div>
 
-        <div class="dashboard-card">
+                <p class="eyebrow">
+                    ADMIN PORTAL
+                </p>
 
-            <p class="card-label">
-                Current Role
-            </p>
+                <h1>
+                    Welcome, <span id="userName"></span>
+                </h1>
 
-            <h2 id="userRole">
-                ADMIN
-            </h2>
+                <p class="admin-subtitle">
+                    Manage training operations from one place.
+                </p>
 
-            <p>
-                You have administrator access to EduTrack.
-            </p>
+            </div>
 
         </div>
+
+        <!-- STATISTICS -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <span>
+                    Total Courses
+                </span>
+
+                <strong id="totalCourses">
+                    0
+                </strong>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span>
+                    Active Batches
+                </span>
+
+                <strong id="activeBatches">
+                    0
+                </strong>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span>
+                    Trainers
+                </span>
+
+                <strong id="trainers">
+                    0
+                </strong>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span>
+                    Trainees
+                </span>
+
+                <strong id="trainees">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+        <!-- TRAINER REQUESTS -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Trainer Registration Requests
+                    </h2>
+
+                    <p>
+                        Review and approve trainer applications.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="trainerRequests"
+                 class="data-list">
+
+            </div>
+
+        </section>
+
+        <!-- COURSES -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Courses
+                    </h2>
+
+                    <p>
+                        Manage EduTrack training programs.
+                    </p>
+
+                </div>
+
+                <button
+                        class="btn primary"
+                        onclick="openCourseModal()">
+
+                    + Create Course
+
+                </button>
+
+            </div>
+
+            <div id="courseList"
+                 class="data-list">
+
+            </div>
+
+        </section>
+
+        <!-- BATCHES -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Batches
+                    </h2>
+
+                    <p>
+                        Create batches and allocate trainers.
+                    </p>
+
+                </div>
+
+                <button
+                        class="btn primary"
+                        onclick="openBatchModal()">
+
+                    + Create Batch
+
+                </button>
+
+            </div>
+
+            <div id="batchList"
+                 class="data-list">
+
+            </div>
+
+        </section>
 
     </main>
 
 </div>
 
-<script src="/js/dashboard.js"></script>
+<!-- COURSE MODAL -->
+
+<div id="courseModal"
+     class="modal">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2>Create Course</h2>
+
+            <button onclick="closeCourseModal()">
+                ×
+            </button>
+
+        </div>
+
+        <form id="courseForm">
+
+            <div class="form-group">
+
+                <label>
+                    Course Name
+                </label>
+
+                <input
+                        id="courseName"
+                        required
+                        maxlength="150"
+                        placeholder="e.g. Java Full Stack">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                        id="courseDescription"
+                        required
+                        placeholder="Describe this course">
+                </textarea>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Status
+                </label>
+
+                <select id="courseStatus">
+
+                    <option value="ACTIVE">
+                        Active
+                    </option>
+
+                    <option value="INACTIVE">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                    class="btn primary full"
+                    type="submit">
+
+                Create Course
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- BATCH MODAL -->
+
+<div id="batchModal"
+     class="modal">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2>Create Batch</h2>
+
+            <button onclick="closeBatchModal()">
+                ×
+            </button>
+
+        </div>
+
+        <form id="batchForm">
+
+            <div class="form-group">
+
+                <label>
+                    Batch Name
+                </label>
+
+                <input
+                        id="batchName"
+                        required
+                        placeholder="e.g. Java-JAN-2027">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Course
+                </label>
+
+                <select
+                        id="batchCourse"
+                        required>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Start Date
+                </label>
+
+                <input
+                        type="date"
+                        id="batchStartDate"
+                        required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    End Date
+                </label>
+
+                <input
+                        type="date"
+                        id="batchEndDate"
+                        required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Trainer
+                </label>
+
+                <select id="batchTrainer">
+
+                    <option value="">
+                        Select trainer
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                    class="btn primary full"
+                    type="submit">
+
+                Create Batch
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="/js/admin-dashboard.js"></script>
 
 </body>
 

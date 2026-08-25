@@ -1,6 +1,7 @@
 package com.edutrack.entity;
 
 import com.edutrack.enums.Role;
+import com.edutrack.enums.TrainerStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,10 @@ public class User {
     @Column(nullable = false, length = 20)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private TrainerStatus trainerStatus;
+
     @Column(nullable = false)
     private boolean enabled = true;
 
@@ -44,8 +49,9 @@ public class User {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
 
-        if (!enabled) {
-            enabled = true;
+        if (role == Role.TRAINER
+                && trainerStatus == null) {
+            trainerStatus = TrainerStatus.PENDING;
         }
     }
 
@@ -63,6 +69,10 @@ public class User {
         this.password = password;
         this.role = role;
         this.enabled = true;
+
+        if (role == Role.TRAINER) {
+            this.trainerStatus = TrainerStatus.PENDING;
+        }
     }
 
     public Long getId() {
@@ -99,6 +109,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public TrainerStatus getTrainerStatus() {
+        return trainerStatus;
+    }
+
+    public void setTrainerStatus(TrainerStatus trainerStatus) {
+        this.trainerStatus = trainerStatus;
     }
 
     public boolean isEnabled() {

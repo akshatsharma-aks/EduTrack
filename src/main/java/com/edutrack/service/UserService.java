@@ -7,6 +7,7 @@ import com.edutrack.enums.Role;
 import com.edutrack.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.edutrack.enums.TrainerStatus;
 
 @Service
 public class UserService {
@@ -51,6 +52,10 @@ public class UserService {
 
         user.setRole(request.getRole());
         user.setEnabled(true);
+
+        if (request.getRole() == Role.TRAINER) {
+            user.setTrainerStatus(TrainerStatus.PENDING);
+        }
 
         User savedUser = userRepository.save(user);
 
