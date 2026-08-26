@@ -636,3 +636,231 @@ a {
         font-size: 32px;
     }
 }
+
+.lecture-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.lecture-item:last-child {
+    border-bottom: none;
+}
+
+.lecture-item strong {
+    display: block;
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.lecture-item p {
+    margin: 0;
+    color: #64748b;
+}
+
+.lecture-video {
+    width: 100%;
+    max-height: 65vh;
+    border-radius: 12px;
+    background: #000;
+}
+
+.lecture-modal {
+    width: min(900px, 92vw);
+}
+
+.modal-close {
+    position: absolute;
+    right: 18px;
+    top: 14px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.trainer-batch-card {
+    display: block;
+}
+
+.batch-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.lecture-management {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.lecture-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.lecture-heading h3 {
+    margin: 0 0 5px;
+}
+
+.lecture-heading p {
+    margin: 0;
+    color: #64748b;
+}
+
+.lecture-list {
+    margin-top: 15px;
+}
+
+.lecture-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.lecture-item:last-child {
+    border-bottom: none;
+}
+
+.lecture-item strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.lecture-item p {
+    margin: 0;
+    color: #64748b;
+}
+
+.lecture-empty {
+    margin-top: 10px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.55);
+}
+
+/* THIS IS THE IMPORTANT RULE */
+
+.modal.active {
+    display: flex;
+}
+
+
+.modal-content {
+    position: relative;
+
+    width: min(600px, 95vw);
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 32px;
+
+    box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+
+.modal-close {
+    position: absolute;
+
+    top: 14px;
+    right: 18px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    color: #64748b;
+}
+
+
+.modal-close:hover {
+    color: #0f172a;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+
+    color: #0f172a;
+}
+
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    font-family: inherit;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus {
+
+    outline: none;
+
+    border-color: #2563eb;
+}
+
+
+.form-group small {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #64748b;
+}

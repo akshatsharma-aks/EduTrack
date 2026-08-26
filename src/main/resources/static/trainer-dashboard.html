@@ -15,9 +15,16 @@
 
 </head>
 
+
 <body>
 
+
 <div class="dashboard-page">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
 
     <header class="dashboard-header">
 
@@ -27,9 +34,12 @@
                 E
             </div>
 
-            <span>EduTrack</span>
+            <span>
+                EduTrack
+            </span>
 
         </div>
+
 
         <button
                 class="btn secondary"
@@ -41,33 +51,74 @@
 
     </header>
 
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
     <main class="admin-content">
+
 
         <p class="eyebrow">
             TRAINER PORTAL
         </p>
 
+
         <h1>
-            Welcome, <span id="userName"></span>
+
+            Welcome,
+            <span id="userName"></span>
+
         </h1>
 
+
         <p class="admin-subtitle">
+
             Your assigned training batches.
+
         </p>
+
+
+        <!-- =========================
+             ASSIGNED BATCHES
+        ========================== -->
 
         <section class="admin-section">
 
-            <h2>
-                Assigned Batches
-            </h2>
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Assigned Batches
+                    </h2>
+
+                    <p>
+                        Manage your training batches
+                        and lectures.
+                    </p>
+
+                </div>
+
+            </div>
+
 
             <div id="trainerBatches"
                  class="data-list">
 
             </div>
 
+
         </section>
+
+
+        <!-- =========================
+             ENROLLMENT REQUESTS
+        ========================== -->
+
         <section class="admin-section">
+
 
             <div class="section-heading">
 
@@ -78,25 +129,175 @@
                     </h2>
 
                     <p>
-                        Review trainees requesting access to your batches.
+                        Review trainees requesting
+                        access to your batches.
                     </p>
 
                 </div>
 
             </div>
 
+
             <div id="enrollmentRequests"
                  class="data-list">
 
             </div>
 
+
         </section>
+
 
     </main>
 
+
 </div>
 
+
+<!-- =========================
+     LECTURE UPLOAD MODAL
+========================== -->
+
+<div id="lectureUploadModal"
+     class="modal">
+
+
+    <div class="modal-content">
+
+
+        <button
+                class="modal-close"
+                onclick="closeLectureUploadModal()">
+
+            ×
+
+        </button>
+
+
+        <h2>
+            Upload Lecture
+        </h2>
+
+
+        <p id="uploadBatchName"
+           class="admin-subtitle">
+
+        </p>
+
+
+        <form id="lectureUploadForm">
+
+
+            <!-- BATCH ID -->
+
+            <input
+                    type="hidden"
+                    id="uploadBatchId">
+
+
+            <!-- TITLE -->
+
+            <div class="form-group">
+
+
+                <label for="lectureTitle">
+
+                    Lecture Title
+
+                </label>
+
+
+                <input
+                        type="text"
+                        id="lectureTitle"
+                        name="title"
+                        placeholder="Enter lecture title"
+                        maxlength="150"
+                        required>
+
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+
+                <label for="lectureDescription">
+
+                    Description
+
+                </label>
+
+
+                <textarea
+                        id="lectureDescription"
+                        name="description"
+                        placeholder="Enter lecture description"
+                        rows="4"></textarea>
+
+
+            </div>
+
+
+            <!-- VIDEO -->
+
+            <div class="form-group">
+
+
+                <label for="lectureFile">
+
+                    Video File
+
+                </label>
+
+
+                <input
+                        type="file"
+                        id="lectureFile"
+                        name="file"
+                        accept="video/mp4"
+                        required>
+
+
+                <small>
+
+                    MP4 only.
+                    Maximum size: 100 MB.
+
+                </small>
+
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                    type="submit"
+                    class="btn primary"
+                    id="uploadLectureButton">
+
+                Upload Lecture
+
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
 <script src="/js/trainer-dashboard.js"></script>
+
 
 </body>
 

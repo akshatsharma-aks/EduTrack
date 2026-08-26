@@ -1,24 +1,35 @@
 package com.edutrack.controller;
 
 import com.edutrack.service.EnrollmentService;
+import com.edutrack.service.LectureService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/trainee")
 public class TraineeController {
 
     private final EnrollmentService enrollmentService;
+    private final LectureService lectureService;
+
 
     public TraineeController(
-            EnrollmentService enrollmentService
+            EnrollmentService enrollmentService,
+            LectureService lectureService
     ) {
-        this.enrollmentService = enrollmentService;
+
+        this.enrollmentService =
+                enrollmentService;
+
+        this.lectureService =
+                lectureService;
     }
+
 
     @GetMapping("/batches")
     public ResponseEntity<?> availableBatches() {
@@ -28,6 +39,7 @@ public class TraineeController {
                         .getAvailableBatches()
         );
     }
+
 
     @PostMapping("/batches/{batchId}/request")
     public ResponseEntity<?> requestToJoin(
@@ -45,6 +57,7 @@ public class TraineeController {
                 );
     }
 
+
     @GetMapping("/enrollments")
     public ResponseEntity<?> myEnrollments(
             Authentication authentication
@@ -58,6 +71,7 @@ public class TraineeController {
         );
     }
 
+
     @GetMapping("/my-batches")
     public ResponseEntity<?> myApprovedBatches(
             Authentication authentication
@@ -70,5 +84,77 @@ public class TraineeController {
                         )
         );
     }
-}
 
+
+    /*
+     * =========================
+     * TRAINEE LECTURES
+     * =========================
+     */
+
+    @GetMapping("/batches/{batchId}/lectures")
+    public ResponseEntity<?> getLectures(
+            @PathVariable Long batchId,
+            Authentication authentication
+    ) {
+
+        return ResponseEntity.ok(
+                lectureService.getTraineeLectures(
+                        authentication.getName(),
+                        batchId
+                )
+        );
+    }
+
+
+    /*
+     * =========================
+     * WATCH LECTURE VIDEO
+     * =========================
+     */
+
+    @GetMapping("/lectures/{lectureId}/video")
+    public ResponseEntity<Resource> watchLecture(
+            @PathVariable Long lectureId,
+            Authentication authentication
+    ) {
+
+        Resource resource =
+                lectureService.getLectureVideo(
+                        authentication.getName(),
+                        lectureId
+                );
+
+
+        String contentType =
+                lectureService.getLectureContentType(
+                        lectureId
+                );
+
+
+        MediaType mediaType;
+
+
+        try {
+
+            mediaType =
+                    MediaType.parseMediaType(
+                            contentType
+                    );
+
+        } catch (Exception e) {
+
+            mediaType =
+                    MediaType.APPLICATION_OCTET_STREAM;
+        }
+
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"lecture.mp4\""
+                )
+                .body(resource);
+    }
+}

@@ -41,6 +41,7 @@
 
     </header>
 
+
     <main class="admin-content">
 
         <p class="eyebrow">
@@ -56,7 +57,10 @@
             Find training batches and manage your enrollment.
         </p>
 
-        <!-- AVAILABLE BATCHES -->
+
+        <!-- =========================
+             AVAILABLE BATCHES
+        ========================== -->
 
         <section class="admin-section">
 
@@ -83,7 +87,10 @@
 
         </section>
 
-        <!-- MY ENROLLMENTS -->
+
+        <!-- =========================
+             MY ENROLLMENT REQUESTS
+        ========================== -->
 
         <section class="admin-section">
 
@@ -110,7 +117,10 @@
 
         </section>
 
-        <!-- MY APPROVED BATCHES -->
+
+        <!-- =========================
+             MY APPROVED BATCHES
+        ========================== -->
 
         <section class="admin-section">
 
@@ -137,11 +147,58 @@
 
         </section>
 
+
     </main>
 
 </div>
 
+
+<!-- =========================
+     LECTURE VIDEO MODAL
+========================== -->
+
+<div id="lectureModal"
+     class="modal">
+
+    <div class="modal-content lecture-modal">
+
+        <button
+                class="modal-close"
+                onclick="closeLecture()">
+
+            ×
+
+        </button>
+
+        <h2 id="lectureTitle">
+            Lecture
+        </h2>
+
+        <p id="lectureDescription"></p>
+
+        <video
+                id="lectureVideo"
+                class="lecture-video"
+                controls
+                preload="metadata">
+
+            Your browser does not support
+            HTML5 video.
+
+        </video>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
 <script src="/js/trainee-dashboard.js"></script>
+
+<script src="/js/lecture-player.js"></script>
 
 </body>
 

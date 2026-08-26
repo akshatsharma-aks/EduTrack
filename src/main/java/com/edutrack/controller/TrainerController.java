@@ -4,9 +4,12 @@ import com.edutrack.dto.TrainerBatchResponse;
 import com.edutrack.entity.Batch;
 import com.edutrack.service.AdminService;
 import com.edutrack.service.EnrollmentService;
+import com.edutrack.service.LectureService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,13 +19,17 @@ public class TrainerController {
 
     private final EnrollmentService enrollmentService;
     private final AdminService adminService;
+    private final LectureService lectureService;
+
 
     public TrainerController(
             AdminService adminService,
-            EnrollmentService enrollmentService
+            EnrollmentService enrollmentService,
+            LectureService lectureService
     ) {
         this.adminService = adminService;
         this.enrollmentService = enrollmentService;
+        this.lectureService = lectureService;
     }
 
     @GetMapping("/batches")
@@ -86,5 +93,63 @@ public class TrainerController {
                         id
                 )
         );
+    }
+
+    @GetMapping("/batches/{batchId}/lectures")
+    public ResponseEntity<?> getLectures(
+            @PathVariable Long batchId,
+            Authentication authentication
+    ) {
+
+        return ResponseEntity.ok(
+                lectureService.getTrainerLectures(
+                        authentication.getName(),
+                        batchId
+                )
+        );
+    }
+
+    @PostMapping(
+            value = "/batches/{batchId}/lectures",
+            consumes = "multipart/form-data"
+    )
+    public ResponseEntity<?> uploadLecture(
+            @PathVariable Long batchId,
+            @RequestParam("title") String title,
+            @RequestParam(
+                    value = "description",
+                    required = false
+            )
+            String description,
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication
+    ) {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(
+                        lectureService.uploadLecture(
+                                authentication.getName(),
+                                batchId,
+                                title,
+                                description,
+                                file
+                        )
+                );
+    }
+
+    @DeleteMapping("/lectures/{lectureId}")
+    public ResponseEntity<?> deleteLecture(
+            @PathVariable Long lectureId,
+            Authentication authentication
+    ) {
+
+        lectureService.deleteLecture(
+                authentication.getName(),
+                lectureId
+        );
+
+        return ResponseEntity.noContent()
+                .build();
     }
 }

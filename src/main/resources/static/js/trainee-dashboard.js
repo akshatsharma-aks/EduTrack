@@ -16,6 +16,7 @@ if (!token || role !== "TRAINEE") {
 document.getElementById("userName")
     .textContent = name;
 
+
 function authHeaders() {
 
     return {
@@ -24,6 +25,11 @@ function authHeaders() {
             `Bearer ${token}`
     };
 }
+
+
+/* =========================
+   AVAILABLE BATCHES
+========================= */
 
 async function loadAvailableBatches() {
 
@@ -160,6 +166,11 @@ async function loadAvailableBatches() {
     });
 }
 
+
+/* =========================
+   REQUEST TO JOIN
+========================= */
+
 async function requestToJoin(batchId) {
 
     const response =
@@ -193,6 +204,11 @@ async function requestToJoin(batchId) {
     await loadMyBatches();
 }
 
+
+/* =========================
+   GET MY ENROLLMENTS
+========================= */
+
 async function getMyEnrollments() {
 
     const response =
@@ -210,6 +226,11 @@ async function getMyEnrollments() {
 
     return response.json();
 }
+
+
+/* =========================
+   MY ENROLLMENTS
+========================= */
 
 async function loadMyEnrollments() {
 
@@ -274,6 +295,63 @@ async function loadMyEnrollments() {
     });
 }
 
+
+/* =========================
+   LOAD LECTURES
+========================= */
+
+async function loadLectures(batchId) {
+
+    console.log(
+        "Loading lectures for batch:",
+        batchId
+    );
+
+    const response =
+        await fetch(
+            `/api/trainee/batches/${batchId}/lectures`,
+            {
+                headers: authHeaders()
+            }
+        );
+
+    console.log(
+        "Lecture API status:",
+        response.status
+    );
+
+
+    if (!response.ok) {
+
+        const errorText =
+            await response.text();
+
+        console.error(
+            "Lecture API failed:",
+            errorText
+        );
+
+        return [];
+    }
+
+
+    const lectures =
+        await response.json();
+
+
+    console.log(
+        "Lectures returned:",
+        lectures
+    );
+
+
+    return lectures;
+}
+
+/* =========================
+   MY APPROVED BATCHES
+========================= */
+
 async function loadMyBatches() {
 
     const response =
@@ -309,23 +387,94 @@ async function loadMyBatches() {
         return;
     }
 
-    batches.forEach(batch => {
+    /*
+     * We use a normal for...of loop here
+     * because we need await for each
+     * batch's lecture request.
+     */
+
+    for (const batch of batches) {
 
         const row =
             document.createElement("div");
 
         row.className = "data-row";
 
+        const lectures =
+            await loadLectures(
+                batch.batchId
+            );
+
+        let lectureHtml = "";
+
+        if (lectures.length === 0) {
+
+            lectureHtml = `
+                <div class="empty-state">
+                    No lectures uploaded yet.
+                </div>
+            `;
+
+        } else {
+
+            lectureHtml =
+                lectures.map(
+                    lecture => `
+
+                    <div class="lecture-item">
+
+                        <div>
+
+                            <strong>
+                                ${escapeHtml(
+                        lecture.title
+                    )}
+                            </strong>
+
+                            <p>
+                                ${escapeHtml(
+                        lecture.description || ""
+                    )}
+                            </p>
+
+                        </div>
+
+                        <button
+                            class="btn small primary"
+                            onclick="openLecture(
+                                ${lecture.id},
+                                '${escapeForAttribute(
+                        lecture.title
+                    )}',
+                                '${escapeForAttribute(
+                        lecture.description || ""
+                    )}'
+                            )">
+
+                            Watch Lecture
+
+                        </button>
+
+                    </div>
+
+                `
+                ).join("");
+        }
+
         row.innerHTML = `
 
             <div class="data-main">
 
                 <strong>
-                    ${batch.batchName}
+                    ${escapeHtml(
+            batch.batchName
+        )}
                 </strong>
 
                 <span>
-                    ${batch.courseName}
+                    ${escapeHtml(
+            batch.courseName
+        )}
                 </span>
 
             </div>
@@ -341,11 +490,62 @@ async function loadMyBatches() {
             <span class="status approved">
                 APPROVED
             </span>
+
+            <div class="lecture-section">
+
+                <h3>
+                    Lectures
+                </h3>
+
+                ${lectureHtml}
+
+            </div>
         `;
 
         container.appendChild(row);
-    });
+    }
 }
+
+
+/* =========================
+   SAFE HTML HELPERS
+========================= */
+
+function escapeHtml(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function escapeForAttribute(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+        return "";
+    }
+
+    return String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/\r?\n/g, "\\n");
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
 
 function logout() {
 
@@ -365,10 +565,17 @@ function logout() {
         "/login.html";
 }
 
+
+/* =========================
+   INITIALIZE
+========================= */
+
 async function initialize() {
 
     await loadAvailableBatches();
+
     await loadMyEnrollments();
+
     await loadMyBatches();
 }
 
