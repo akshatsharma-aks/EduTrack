@@ -1,4 +1,8 @@
 package com.edutrack.enums;
 
-public class QuizStatus {
+public enum QuizStatus {
+
+    DRAFT,
+
+    PUBLISHED
 }

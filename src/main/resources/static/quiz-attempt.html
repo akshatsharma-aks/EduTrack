@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz Attempt | EduTrack</title>
+
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-page">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                E
+            </div>
+
+            <span>
+                EduTrack
+            </span>
+
+        </div>
+
+
+        <div style="
+                display:flex;
+                align-items:center;
+                gap:20px;
+            ">
+
+            <!-- TAB SWITCH COUNTER -->
+
+            <div
+                    id="violationCounter"
+                    style="
+                        font-size:14px;
+                        font-weight:700;
+                        padding:8px 14px;
+                        border-radius:20px;
+                        background:#fff3cd;
+                        color:#856404;
+                        border:1px solid #ffe69c;
+                    ">
+
+                Tab switches: 0 / 2
+
+            </div>
+
+
+            <!-- TIMER -->
+
+            <div
+                    id="timer"
+                    style="
+                        font-size:22px;
+                        font-weight:700;
+                    ">
+
+                --:--
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="admin-content">
+
+
+        <p class="eyebrow">
+            QUIZ ATTEMPT
+        </p>
+
+
+        <h1 id="quizTitle">
+            Loading Quiz...
+        </h1>
+
+
+        <p
+                id="quizInfo"
+                class="admin-subtitle">
+
+        </p>
+
+
+        <!-- =========================
+             PROGRESS / QUESTION
+        ========================== -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2 id="questionCounter">
+                        Question
+                    </h2>
+
+                    <p>
+                        Select your answer and use
+                        the navigation buttons.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION -->
+
+            <div id="questionContainer">
+
+                <div class="empty-state">
+
+                    Loading question...
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-top:30px;
+                        gap:10px;
+                    ">
+
+                <button
+                        id="previousButton"
+                        class="btn secondary"
+                        onclick="previousQuestion()">
+
+                    Previous
+
+                </button>
+
+
+                <div
+                        id="questionNavigation"
+                        style="
+                            display:flex;
+                            flex-wrap:wrap;
+                            gap:8px;
+                            justify-content:center;
+                        ">
+
+                </div>
+
+
+                <button
+                        id="nextButton"
+                        class="btn primary"
+                        onclick="nextQuestion()">
+
+                    Next
+
+                </button>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <div
+                    style="
+                        margin-top:30px;
+                        text-align:center;
+                    ">
+
+                <button
+                        id="submitButton"
+                        class="btn primary"
+                        onclick="submitQuiz()">
+
+                    Submit Quiz
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- ==================================================
+     TAB SWITCH WARNING MODAL
+=================================================== -->
+
+<div
+        id="violationModal"
+        style="
+            display:none;
+            position:fixed;
+            inset:0;
+            z-index:9999;
+            background:rgba(0,0,0,0.65);
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+        ">
+
+    <div
+            style="
+                width:100%;
+                max-width:500px;
+                background:white;
+                border-radius:18px;
+                padding:32px;
+                box-shadow:0 20px 60px rgba(0,0,0,0.3);
+                text-align:center;
+            ">
+
+        <div
+                id="violationIcon"
+                style="
+                    font-size:48px;
+                    margin-bottom:10px;
+                ">
+
+            ⚠️
+
+        </div>
+
+
+        <h2 id="violationTitle">
+
+            Warning
+
+        </h2>
+
+
+        <p
+                id="violationMessage"
+                style="
+                    font-size:17px;
+                    line-height:1.6;
+                    margin:15px 0 25px;
+                ">
+
+            Please remain on the quiz page.
+
+        </p>
+
+
+        <div
+                id="violationCountText"
+                style="
+                    font-weight:700;
+                    margin-bottom:20px;
+                ">
+
+        </div>
+
+
+        <button
+                id="violationContinueButton"
+                class="btn primary"
+                onclick="closeViolationModal()">
+
+            Continue Quiz
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     AUTO-SUBMIT OVERLAY
+=================================================== -->
+
+<div
+        id="autoSubmitOverlay"
+        style="
+            display:none;
+            position:fixed;
+            inset:0;
+            z-index:10000;
+            background:rgba(0,0,0,0.78);
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+        ">
+
+    <div
+            style="
+                width:100%;
+                max-width:500px;
+                background:white;
+                border-radius:18px;
+                padding:35px;
+                text-align:center;
+                box-shadow:0 20px 60px rgba(0,0,0,0.35);
+            ">
+
+        <div
+                style="
+                    font-size:48px;
+                    margin-bottom:10px;
+                ">
+
+            🚫
+
+        </div>
+
+
+        <h2>
+            Quiz Automatically Submitted
+        </h2>
+
+
+        <p
+                style="
+                    font-size:17px;
+                    line-height:1.6;
+                    margin-top:15px;
+                ">
+
+            The maximum number of tab-switching
+            violations has been reached.
+
+        </p>
+
+
+        <p
+                id="autoSubmitStatus"
+                style="
+                    font-weight:700;
+                    margin-top:20px;
+                ">
+
+            Submitting your quiz...
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<script src="/js/quiz-attempt.js"></script>
+
+</body>
+
+</html>

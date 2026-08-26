@@ -982,5 +982,11 @@ async function initialize() {
     await loadMyBatches();
 }
 
+function openQuizzes() {
+
+    window.location.href =
+        "/quizzes.html";
+}
+
 
 initialize();

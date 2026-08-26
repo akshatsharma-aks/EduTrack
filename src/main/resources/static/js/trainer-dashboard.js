@@ -1203,6 +1203,139 @@ function escapeForAttribute(value) {
         .replace(/'/g, "\\'")
         .replace(/\r?\n/g, "\\n");
 }
+function openQuizBuilder() {
+
+    window.location.href =
+        "/quiz-builder.html";
+}
+function viewQuizResults(
+    quizId
+) {
+
+    window.location.href =
+        `/quiz-results.html?quizId=${quizId}`;
+}
+
+async function loadTrainerQuizzes() {
+
+    const response =
+        await fetch(
+            "/api/trainer/quizzes",
+            {
+                headers: {
+                    "Authorization":
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+    const container =
+        document.getElementById(
+            "trainerQuizzes"
+        );
+
+    if (!container) {
+
+        return;
+    }
+
+    if (!response.ok) {
+
+        container.innerHTML =
+            `<div class="empty-state">
+                Unable to load quizzes.
+             </div>`;
+
+        return;
+    }
+
+    const quizzes =
+        await response.json();
+
+    container.innerHTML = "";
+
+    if (quizzes.length === 0) {
+
+        container.innerHTML =
+            `<div class="empty-state">
+                No quizzes created yet.
+             </div>`;
+
+        return;
+    }
+
+    quizzes.forEach(
+        quiz => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "data-row";
+
+            row.innerHTML = `
+
+                <div class="data-main">
+
+                    <strong>
+                        ${escapeHtml(
+                quiz.title
+            )}
+                    </strong>
+
+                    <span>
+                        Batch:
+                        ${escapeHtml(
+                quiz.batchName
+            )}
+                    </span>
+
+                    <span>
+                        Questions:
+                        ${quiz.questionCount}
+                    </span>
+
+                    <span>
+                        Time:
+                        ${quiz.timeLimitMinutes}
+                        minutes
+                    </span>
+
+                </div>
+
+                <span class="status
+                    ${String(
+                quiz.status
+            ).toLowerCase()}">
+
+                    ${quiz.status}
+
+                </span>
+
+                <div class="row-actions">
+
+                    <button
+                        class="btn small primary"
+                        onclick="viewQuizResults(
+                            ${quiz.id}
+                        )">
+
+                        Results
+
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(
+                row
+            );
+        }
+    );
+}
 
 
 /* =========================
@@ -1210,5 +1343,5 @@ function escapeForAttribute(value) {
 ========================= */
 
 loadAssignedBatches();
-
 loadEnrollmentRequests();
+loadTrainerQuizzes();

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz Result | EduTrack</title>
+
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-page">
+
+
+    <header class="dashboard-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                E
+            </div>
+
+            <span>
+                EduTrack
+            </span>
+
+        </div>
+
+
+        <button
+                class="btn secondary"
+                onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </header>
+
+
+    <main class="admin-content">
+
+
+        <p class="eyebrow">
+            QUIZ RESULT
+        </p>
+
+
+        <h1 id="resultTitle">
+            Quiz Completed
+        </h1>
+
+
+        <p class="admin-subtitle">
+            Your quiz has been evaluated successfully.
+        </p>
+
+
+        <section class="admin-section">
+
+
+            <div
+                    id="resultCard"
+                    class="data-list">
+
+            </div>
+
+
+        </section>
+
+
+        <div
+                style="
+                display:flex;
+                gap:12px;
+                margin-top:20px;
+            ">
+
+            <button
+                    class="btn primary"
+                    onclick="goToQuizzes()">
+
+                View Quizzes
+
+            </button>
+
+
+            <button
+                    class="btn secondary"
+                    onclick="goToDashboard()">
+
+                Dashboard
+
+            </button>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+<script src="/js/quiz-result.js"></script>
+
+</body>
+
+</html>

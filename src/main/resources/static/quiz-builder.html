@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Quiz | EduTrack</title>
+
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-page">
+
+    <header class="dashboard-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                E
+            </div>
+
+            <span>EduTrack</span>
+
+        </div>
+
+        <button
+                class="btn secondary"
+                onclick="goBack()">
+
+            Back
+
+        </button>
+
+    </header>
+
+
+    <main class="admin-content">
+
+        <p class="eyebrow">
+            QUIZ BUILDER
+        </p>
+
+        <h1>
+            Create Quiz
+        </h1>
+
+        <p class="admin-subtitle">
+            Build an assessment for one of your assigned batches.
+        </p>
+
+
+        <section class="admin-section">
+
+            <div class="form-group">
+
+                <label for="quizTitle">
+                    Quiz Title
+                </label>
+
+                <input
+                        type="text"
+                        id="quizTitle"
+                        maxlength="150"
+                        placeholder="e.g. Java Basics Assessment">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="quizBatch">
+                    Batch
+                </label>
+
+                <select id="quizBatch">
+
+                    <option value="">
+                        Select Batch
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="timeLimit">
+                    Time Limit (minutes)
+                </label>
+
+                <input
+                        type="number"
+                        id="timeLimit"
+                        min="1"
+                        max="180"
+                        value="15">
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Questions
+                    </h2>
+
+                    <p>
+                        Add questions and define the correct answers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="questionsContainer"></div>
+
+
+            <button
+                    type="button"
+                    class="btn secondary"
+                    onclick="addQuestion()">
+
+                + Add Question
+
+            </button>
+
+        </section>
+
+
+        <div class="quiz-builder-actions">
+
+            <button
+                    type="button"
+                    class="btn secondary"
+                    onclick="saveQuiz(false)">
+
+                Save Draft
+
+            </button>
+
+
+            <button
+                    type="button"
+                    class="btn primary"
+                    onclick="saveQuiz(true)">
+
+                Publish Quiz
+
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="/js/quiz-builder.js"></script>
+
+</body>
+
+</html>

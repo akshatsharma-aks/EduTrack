@@ -15,12 +15,9 @@
 
 </head>
 
-
 <body>
 
-
 <div class="dashboard-page">
-
 
     <!-- =========================
          HEADER
@@ -40,7 +37,6 @@
 
         </div>
 
-
         <button
                 class="btn secondary"
                 onclick="logout()">
@@ -58,11 +54,9 @@
 
     <main class="admin-content">
 
-
         <p class="eyebrow">
             TRAINER PORTAL
         </p>
-
 
         <h1>
 
@@ -70,7 +64,6 @@
             <span id="userName"></span>
 
         </h1>
-
 
         <p class="admin-subtitle">
 
@@ -80,11 +73,73 @@
 
 
         <!-- =========================
-             ASSIGNED BATCHES
+             QUIZ MANAGEMENT
         ========================== -->
 
         <section class="admin-section">
 
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Quiz Management
+                    </h2>
+
+                    <p>
+                        Create assessments for your assigned batches.
+                    </p>
+
+                </div>
+
+                <button
+                        class="btn primary"
+                        onclick="openQuizBuilder()">
+
+                    + Create Quiz
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MY QUIZZES
+        ========================== -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        My Quizzes
+                    </h2>
+
+                    <p>
+                        Manage quizzes and view trainee results.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="trainerQuizzes"
+                 class="data-list">
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ASSIGNED BATCHES
+        ========================== -->
+
+        <section class="admin-section">
 
             <div class="section-heading">
 
@@ -103,12 +158,10 @@
 
             </div>
 
-
             <div id="trainerBatches"
                  class="data-list">
 
             </div>
-
 
         </section>
 
@@ -118,7 +171,6 @@
         ========================== -->
 
         <section class="admin-section">
-
 
             <div class="section-heading">
 
@@ -137,18 +189,14 @@
 
             </div>
 
-
             <div id="enrollmentRequests"
                  class="data-list">
 
             </div>
 
-
         </section>
 
-
     </main>
-
 
 </div>
 
@@ -160,9 +208,7 @@
 <div id="lectureUploadModal"
      class="modal">
 
-
     <div class="modal-content">
-
 
         <button
                 class="modal-close"
@@ -172,20 +218,16 @@
 
         </button>
 
-
         <h2>
             Upload Lecture
         </h2>
-
 
         <p id="uploadBatchName"
            class="admin-subtitle">
 
         </p>
 
-
         <form id="lectureUploadForm">
-
 
             <input
                     type="hidden"
@@ -201,7 +243,6 @@
                     Lecture Title
 
                 </label>
-
 
                 <input
                         type="text"
@@ -224,7 +265,6 @@
 
                 </label>
 
-
                 <textarea
                         id="lectureDescription"
                         name="description"
@@ -244,14 +284,12 @@
 
                 </label>
 
-
                 <input
                         type="file"
                         id="lectureFile"
                         name="file"
                         accept="video/mp4"
                         required>
-
 
                 <small>
 
@@ -274,9 +312,7 @@
 
             </button>
 
-
         </form>
-
 
     </div>
 
@@ -290,9 +326,7 @@
 <div id="progressModal"
      class="modal">
 
-
     <div class="modal-content progress-modal">
-
 
         <button
                 class="modal-close"
@@ -302,20 +336,17 @@
 
         </button>
 
-
         <h2 id="progressLectureTitle">
 
             Lecture Progress
 
         </h2>
 
-
         <p class="admin-subtitle">
 
             Track trainee completion for this lecture.
 
         </p>
-
 
         <div id="progressReport">
 
@@ -327,7 +358,6 @@
 
         </div>
 
-
     </div>
 
 </div>
@@ -338,7 +368,6 @@
 ========================== -->
 
 <script src="/js/trainer-dashboard.js"></script>
-
 
 </body>
 

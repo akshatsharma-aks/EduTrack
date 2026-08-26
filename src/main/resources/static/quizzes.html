@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Quizzes | EduTrack</title>
+
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-page">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                E
+            </div>
+
+            <span>
+                EduTrack
+            </span>
+
+        </div>
+
+        <div style="display:flex; gap:10px;">
+
+            <button
+                    class="btn secondary"
+                    onclick="goBack()">
+
+                Dashboard
+
+            </button>
+
+            <button
+                    class="btn secondary"
+                    onclick="logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="admin-content">
+
+        <p class="eyebrow">
+            TRAINEE PORTAL
+        </p>
+
+        <h1>
+            Quizzes
+        </h1>
+
+        <p class="admin-subtitle">
+            Take quizzes assigned to your approved batches.
+        </p>
+
+
+        <!-- =========================
+             AVAILABLE QUIZZES
+        ========================== -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Available Quizzes
+                    </h2>
+
+                    <p>
+                        Published quizzes available for your batches.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="quizList"
+                 class="data-list">
+
+                <div class="empty-state">
+                    Loading quizzes...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PREVIOUS RESULTS
+        ========================== -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Previous Results
+                    </h2>
+
+                    <p>
+                        Review your previous quiz attempts.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="resultList"
+                 class="data-list">
+
+                <div class="empty-state">
+                    Loading results...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="/js/quizzes.js"></script>
+
+</body>
+
+</html>
