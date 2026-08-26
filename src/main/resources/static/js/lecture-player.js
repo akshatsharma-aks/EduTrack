@@ -1,3 +1,14 @@
+let currentLectureId = null;
+
+let progressSaveTimer = null;
+
+let currentObjectUrl = null;
+
+
+/* =========================
+   OPEN LECTURE
+========================= */
+
 async function openLecture(
     lectureId,
     title,
@@ -25,32 +36,27 @@ async function openLecture(
         );
 
 
+    currentLectureId =
+        lectureId;
+
+
     titleElement.textContent =
         title;
+
 
     descriptionElement.textContent =
         description || "";
 
 
-    /*
-     * Show modal immediately.
-     */
+    modal.classList.add(
+        "active"
+    );
 
-    modal.classList.add("active");
-
-
-    /*
-     * Show loading state.
-     */
 
     video.removeAttribute("src");
 
     video.load();
 
-
-    /*
-     * Get JWT from localStorage.
-     */
 
     const token =
         localStorage.getItem(
@@ -74,15 +80,13 @@ async function openLecture(
     try {
 
         /*
-         * Request the video with the JWT.
+         * Load previous progress
          */
 
-        const response =
+        const progressResponse =
             await fetch(
-                `/api/trainee/lectures/${lectureId}/video`,
+                `/api/trainee/lectures/${lectureId}/progress`,
                 {
-                    method: "GET",
-
                     headers: {
                         "Authorization":
                             `Bearer ${token}`
@@ -91,18 +95,37 @@ async function openLecture(
             );
 
 
+        let savedPosition = 0;
+
+
+        if (progressResponse.ok) {
+
+            const progress =
+                await progressResponse.json();
+
+
+            savedPosition =
+                progress.currentPosition || 0;
+        }
+
+
         /*
-         * Check authentication /
-         * authorization / server errors.
+         * Load authenticated video
          */
 
-        if (!response.ok) {
-
-            console.error(
-                "Video request failed:",
-                response.status
+        const response =
+            await fetch(
+                `/api/trainee/lectures/${lectureId}/video`,
+                {
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
+                }
             );
 
+
+        if (!response.ok) {
 
             if (
                 response.status === 401 ||
@@ -120,77 +143,49 @@ async function openLecture(
                 );
             }
 
-
             return;
         }
 
-
-        /*
-         * Convert server response
-         * into a browser Blob.
-         */
 
         const videoBlob =
             await response.blob();
 
 
-        /*
-         * Create temporary URL.
-         */
-
-        const videoUrl =
+        currentObjectUrl =
             URL.createObjectURL(
                 videoBlob
             );
 
 
-        /*
-         * Remove previous object URL
-         * if one exists.
-         */
-
-        if (video.dataset.objectUrl) {
-
-            URL.revokeObjectURL(
-                video.dataset.objectUrl
-            );
-        }
-
-
-        video.dataset.objectUrl =
-            videoUrl;
-
-
-        /*
-         * Give Blob URL to HTML5 video.
-         */
-
         video.src =
-            videoUrl;
+            currentObjectUrl;
 
 
         video.load();
 
 
         /*
-         * Start playback after
-         * browser has loaded enough data.
+         * Restore saved position
+         * after metadata is available.
          */
 
-        video.play().catch(
-            error => {
+        video.addEventListener(
+            "loadedmetadata",
+            function restorePosition() {
 
-                /*
-                 * Autoplay can be blocked
-                 * by the browser.
-                 *
-                 * That's okay.
-                 * User can press Play.
-                 */
+                if (
+                    savedPosition > 0 &&
+                    savedPosition < video.duration
+                ) {
 
-                console.log(
-                    "Autoplay prevented:",
-                    error
+                    video.currentTime =
+                        savedPosition;
+                }
+
+
+                video.removeEventListener(
+                    "loadedmetadata",
+                    restorePosition
                 );
             }
         );
@@ -211,7 +206,88 @@ async function openLecture(
 }
 
 
-function closeLecture() {
+/* =========================
+   VIDEO TIME UPDATE
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const video =
+            document.getElementById(
+                "lectureVideo"
+            );
+
+
+        if (!video) {
+
+            return;
+        }
+
+
+        video.addEventListener(
+            "timeupdate",
+            function () {
+
+                if (
+                    !video.duration ||
+                    !currentLectureId
+                ) {
+
+                    return;
+                }
+
+
+                /*
+                 * Save approximately every
+                 * 5 seconds.
+                 */
+
+                if (!progressSaveTimer) {
+
+                    progressSaveTimer =
+                        setTimeout(
+                            function () {
+
+                                saveVideoProgress();
+
+                                progressSaveTimer =
+                                    null;
+
+                            },
+                            5000
+                        );
+                }
+            }
+        );
+
+
+        video.addEventListener(
+            "pause",
+            function () {
+
+                saveVideoProgress();
+            }
+        );
+
+
+        video.addEventListener(
+            "ended",
+            function () {
+
+                saveVideoProgress();
+            }
+        );
+    }
+);
+
+
+/* =========================
+   SAVE VIDEO PROGRESS
+========================= */
+
+async function saveVideoProgress() {
 
     const video =
         document.getElementById(
@@ -219,30 +295,108 @@ function closeLecture() {
         );
 
 
+    if (
+        !video ||
+        !currentLectureId ||
+        !video.duration ||
+        video.duration <= 0
+    ) {
+
+        return;
+    }
+
+
+    const token =
+        localStorage.getItem(
+            "edutrack_token"
+        );
+
+
+    if (!token) {
+
+        return;
+    }
+
+
+    try {
+
+        await fetch(
+            `/api/trainee/lectures/${currentLectureId}/progress`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        `Bearer ${token}`
+                },
+
+                body: JSON.stringify({
+
+                    currentPosition:
+                    video.currentTime,
+
+                    duration:
+                    video.duration
+                })
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to save video progress:",
+            error
+        );
+    }
+}
+
+
+/* =========================
+   CLOSE LECTURE
+========================= */
+
+function closeLecture() {
+
     /*
-     * Stop playback.
+     * Save one final progress value
+     * before closing.
      */
+
+    saveVideoProgress();
+
+
+    const video =
+        document.getElementById(
+            "lectureVideo"
+        );
+
 
     video.pause();
 
 
-    /*
-     * Revoke temporary Blob URL.
-     */
+    if (progressSaveTimer) {
 
-    if (video.dataset.objectUrl) {
-
-        URL.revokeObjectURL(
-            video.dataset.objectUrl
+        clearTimeout(
+            progressSaveTimer
         );
 
-        delete video.dataset.objectUrl;
+        progressSaveTimer = null;
     }
 
 
-    /*
-     * Remove video source.
-     */
+    if (currentObjectUrl) {
+
+        URL.revokeObjectURL(
+            currentObjectUrl
+        );
+
+        currentObjectUrl = null;
+    }
+
 
     video.removeAttribute(
         "src"
@@ -251,11 +405,13 @@ function closeLecture() {
     video.load();
 
 
-    /*
-     * Hide modal.
-     */
-
     document.getElementById(
         "lectureModal"
-    ).classList.remove("active");
+    ).classList.remove(
+        "active"
+    );
+
+
+    currentLectureId =
+        null;
 }

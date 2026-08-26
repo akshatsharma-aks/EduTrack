@@ -5,6 +5,7 @@ import com.edutrack.entity.Batch;
 import com.edutrack.service.AdminService;
 import com.edutrack.service.EnrollmentService;
 import com.edutrack.service.LectureService;
+import com.edutrack.service.VideoProgressService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,16 +21,19 @@ public class TrainerController {
     private final EnrollmentService enrollmentService;
     private final AdminService adminService;
     private final LectureService lectureService;
+    private final VideoProgressService videoProgressService;
 
 
     public TrainerController(
             AdminService adminService,
             EnrollmentService enrollmentService,
-            LectureService lectureService
+            LectureService lectureService,
+            VideoProgressService videoProgressService
     ) {
         this.adminService = adminService;
         this.enrollmentService = enrollmentService;
         this.lectureService = lectureService;
+        this.videoProgressService = videoProgressService;
     }
 
     @GetMapping("/batches")
@@ -151,5 +155,19 @@ public class TrainerController {
 
         return ResponseEntity.noContent()
                 .build();
+    }
+    @GetMapping("/lectures/{lectureId}/progress")
+    public ResponseEntity<?> getLectureProgress(
+            @PathVariable Long lectureId,
+            Authentication authentication
+    ) {
+
+        return ResponseEntity.ok(
+                videoProgressService
+                        .getTrainerLectureProgress(
+                                authentication.getName(),
+                                lectureId
+                        )
+        );
     }
 }

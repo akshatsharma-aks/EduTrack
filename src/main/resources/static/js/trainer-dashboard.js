@@ -40,21 +40,27 @@ async function loadAssignedBatches() {
             }
         );
 
+
     if (!response.ok) {
 
         logout();
+
         return;
     }
 
+
     const batches =
         await response.json();
+
 
     const container =
         document.getElementById(
             "trainerBatches"
         );
 
+
     container.innerHTML = "";
+
 
     if (batches.length === 0) {
 
@@ -68,9 +74,8 @@ async function loadAssignedBatches() {
 
 
     /*
-     * Use for...of instead of forEach
-     * because we need await while loading
-     * lectures for each batch.
+     * for...of is used because
+     * lectures are loaded asynchronously.
      */
 
     for (const batch of batches) {
@@ -78,12 +83,13 @@ async function loadAssignedBatches() {
         const row =
             document.createElement("div");
 
+
         row.className =
             "data-row trainer-batch-card";
 
 
         /* =========================
-           LOAD LECTURES FOR BATCH
+           LOAD LECTURES
         ========================= */
 
         const lectures =
@@ -113,7 +119,7 @@ async function loadAssignedBatches() {
 
                     <div class="lecture-item">
 
-                        <div>
+                        <div class="lecture-info">
 
                             <strong>
                                 ${escapeHtml(
@@ -129,15 +135,38 @@ async function loadAssignedBatches() {
 
                         </div>
 
-                        <button
-                            class="btn small danger"
-                            onclick="deleteLecture(
-                                ${lecture.id}
-                            )">
 
-                            Delete
+                        <div class="lecture-actions">
 
-                        </button>
+                            <!-- VIEW PROGRESS -->
+
+                            <button
+                                class="btn small primary"
+                                onclick="viewLectureProgress(
+                                    ${lecture.id},
+                                    '${escapeForAttribute(
+                        lecture.title
+                    )}'
+                                )">
+
+                                View Progress
+
+                            </button>
+
+
+                            <!-- DELETE -->
+
+                            <button
+                                class="btn small danger"
+                                onclick="deleteLecture(
+                                    ${lecture.id}
+                                )">
+
+                                Delete
+
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -193,7 +222,8 @@ async function loadAssignedBatches() {
                         </h3>
 
                         <p>
-                            Manage lectures for this batch.
+                            Manage lectures and
+                            monitor trainee progress.
                         </p>
 
                     </div>
@@ -249,10 +279,12 @@ async function loadTrainerLectures(
             }
         );
 
+
     if (!response.ok) {
 
         return [];
     }
+
 
     return response.json();
 }
@@ -261,6 +293,7 @@ async function loadTrainerLectures(
 /* =========================
    OPEN UPLOAD MODAL
 ========================= */
+
 function openLectureUploadModal(
     batchId,
     batchName
@@ -272,15 +305,18 @@ function openLectureUploadModal(
         batchName
     );
 
+
     const modal =
         document.getElementById(
             "lectureUploadModal"
         );
 
+
     const batchIdInput =
         document.getElementById(
             "uploadBatchId"
         );
+
 
     const batchNameElement =
         document.getElementById(
@@ -326,14 +362,10 @@ function openLectureUploadModal(
         `Batch: ${batchName}`;
 
 
-    modal.classList.add("active");
-
-
-    console.log(
-        "Lecture upload modal opened"
+    modal.classList.add(
+        "active"
     );
 }
-
 
 
 /* =========================
@@ -342,19 +374,42 @@ function openLectureUploadModal(
 
 function closeLectureUploadModal() {
 
-    document.getElementById(
-        "lectureUploadModal"
-    ).classList.remove("active");
+    const modal =
+        document.getElementById(
+            "lectureUploadModal"
+        );
 
 
-    document.getElementById(
-        "lectureUploadForm"
-    ).reset();
+    if (modal) {
+
+        modal.classList.remove(
+            "active"
+        );
+    }
 
 
-    document.getElementById(
-        "uploadBatchId"
-    ).value = "";
+    const form =
+        document.getElementById(
+            "lectureUploadForm"
+        );
+
+
+    if (form) {
+
+        form.reset();
+    }
+
+
+    const batchId =
+        document.getElementById(
+            "uploadBatchId"
+        );
+
+
+    if (batchId) {
+
+        batchId.value = "";
+    }
 }
 
 
@@ -460,11 +515,10 @@ document.getElementById(
                         },
 
                         /*
-                         * IMPORTANT:
-                         * Do NOT set Content-Type here.
+                         * Do NOT set Content-Type.
                          *
-                         * Browser automatically creates:
-                         * multipart/form-data
+                         * Browser automatically
+                         * creates multipart/form-data.
                          */
 
                         body: formData
@@ -494,12 +548,6 @@ document.getElementById(
 
             closeLectureUploadModal();
 
-
-            /*
-             * Reload batches so the newly
-             * uploaded lecture immediately
-             * appears.
-             */
 
             await loadAssignedBatches();
 
@@ -583,6 +631,302 @@ async function deleteLecture(
 
 
     await loadAssignedBatches();
+}
+
+
+/* =========================
+   VIEW LECTURE PROGRESS
+========================= */
+
+async function viewLectureProgress(
+    lectureId,
+    lectureTitle
+) {
+
+    const modal =
+        document.getElementById(
+            "progressModal"
+        );
+
+
+    const titleElement =
+        document.getElementById(
+            "progressLectureTitle"
+        );
+
+
+    const container =
+        document.getElementById(
+            "progressReport"
+        );
+
+
+    if (!modal || !titleElement || !container) {
+
+        console.error(
+            "Progress modal elements not found."
+        );
+
+        return;
+    }
+
+
+    titleElement.textContent =
+        lectureTitle;
+
+
+    /*
+     * Show modal immediately.
+     */
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    /*
+     * Loading state.
+     */
+
+    container.innerHTML = `
+        <div class="empty-state">
+            Loading trainee progress...
+        </div>
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/trainer/lectures/${lectureId}/progress`,
+                {
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+
+        const text =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Progress API failed:",
+                response.status,
+                text
+            );
+
+
+            container.innerHTML = `
+                <div class="empty-state">
+
+                    Unable to load trainee progress.
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const progress =
+            text
+                ? JSON.parse(text)
+                : [];
+
+
+        if (!Array.isArray(progress)
+            || progress.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty-state">
+
+                    No trainee progress recorded yet.
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <div class="progress-table-wrapper">
+
+                <table class="progress-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Progress
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        ${progress.map(
+            student => {
+
+                const percentage =
+                    Math.round(
+                        student.percentageWatched || 0
+                    );
+
+
+                let statusClass =
+                    "not-started";
+
+
+                if (
+                    student.completed
+                ) {
+
+                    statusClass =
+                        "completed";
+
+                } else if (
+                    percentage > 0
+                ) {
+
+                    statusClass =
+                        "in-progress";
+                }
+
+
+                return `
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                ${escapeHtml(
+                    student.traineeName
+                )}
+                                            </strong>
+                                        </td>
+
+
+                                        <td>
+                                            ${escapeHtml(
+                    student.traineeEmail
+                )}
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="report-progress">
+
+                                                <div
+                                                    class="progress-bar">
+
+                                                    <div
+                                                        class="progress-fill"
+                                                        style="width: ${percentage}%">
+                                                    </div>
+
+                                                </div>
+
+                                                <span>
+                                                    ${percentage}%
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span
+                                                class="progress-status ${statusClass}">
+
+                                                ${
+                    student.completed
+                        ? "Completed"
+                        : percentage > 0
+                            ? "In Progress"
+                            : "Not Started"
+                }
+
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+                                `;
+            }
+        ).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "Progress loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="empty-state">
+
+                Unable to load trainee progress.
+
+            </div>
+        `;
+    }
+}
+
+
+/* =========================
+   CLOSE PROGRESS MODAL
+========================= */
+
+function closeProgressModal() {
+
+    const modal =
+        document.getElementById(
+            "progressModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove(
+            "active"
+        );
+    }
 }
 
 

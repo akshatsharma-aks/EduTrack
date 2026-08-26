@@ -864,3 +864,197 @@ a {
 
     color: #64748b;
 }
+
+/* =========================
+   LECTURE ACTIONS
+========================= */
+
+.lecture-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* =========================
+   PROGRESS MODAL
+========================= */
+
+.progress-modal {
+    width: min(900px, 95vw);
+}
+
+
+/* =========================
+   PROGRESS TABLE
+========================= */
+
+.progress-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 24px;
+}
+
+
+.progress-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.progress-table th,
+.progress-table td {
+    padding: 14px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.progress-table th {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+}
+
+
+.progress-table td {
+    font-size: 14px;
+    color: #334155;
+}
+
+
+/* =========================
+   REPORT PROGRESS
+========================= */
+
+.report-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+}
+
+
+.report-progress .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+
+.report-progress .progress-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 999px;
+}
+
+
+.report-progress > span {
+    min-width: 40px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   PROGRESS STATUS
+========================= */
+
+.progress-status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.progress-status.completed {
+    background: #dcfce7;
+    color: #047857;
+}
+
+
+.progress-status.in-progress {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+
+.progress-status.not-started {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* =========================
+   TRAINEE LECTURE PROGRESS
+========================= */
+
+.lecture-info {
+    flex: 1;
+}
+
+
+.lecture-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    max-width: 400px;
+}
+
+
+.lecture-progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+
+.lecture-progress-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+
+.lecture-progress-text {
+    min-width: 42px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.progress-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.progress-status.completed {
+    background: #dcfce7;
+    color: #047857;
+}
+
+
+.progress-status.in-progress {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+
+.progress-status.not-started {
+    background: #f1f5f9;
+    color: #64748b;
+}

@@ -187,8 +187,6 @@
         <form id="lectureUploadForm">
 
 
-            <!-- BATCH ID -->
-
             <input
                     type="hidden"
                     id="uploadBatchId">
@@ -197,7 +195,6 @@
             <!-- TITLE -->
 
             <div class="form-group">
-
 
                 <label for="lectureTitle">
 
@@ -214,14 +211,12 @@
                         maxlength="150"
                         required>
 
-
             </div>
 
 
             <!-- DESCRIPTION -->
 
             <div class="form-group">
-
 
                 <label for="lectureDescription">
 
@@ -236,14 +231,12 @@
                         placeholder="Enter lecture description"
                         rows="4"></textarea>
 
-
             </div>
 
 
             <!-- VIDEO -->
 
             <div class="form-group">
-
 
                 <label for="lectureFile">
 
@@ -267,7 +260,6 @@
 
                 </small>
 
-
             </div>
 
 
@@ -288,6 +280,55 @@
 
     </div>
 
+</div>
+
+
+<!-- =========================
+     PROGRESS REPORT MODAL
+========================== -->
+
+<div id="progressModal"
+     class="modal">
+
+
+    <div class="modal-content progress-modal">
+
+
+        <button
+                class="modal-close"
+                onclick="closeProgressModal()">
+
+            ×
+
+        </button>
+
+
+        <h2 id="progressLectureTitle">
+
+            Lecture Progress
+
+        </h2>
+
+
+        <p class="admin-subtitle">
+
+            Track trainee completion for this lecture.
+
+        </p>
+
+
+        <div id="progressReport">
+
+            <div class="empty-state">
+
+                Loading trainee progress...
+
+            </div>
+
+        </div>
+
+
+    </div>
 
 </div>
 

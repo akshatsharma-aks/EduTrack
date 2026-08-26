@@ -7,15 +7,25 @@ const role =
 const name =
     localStorage.getItem("edutrack_name");
 
+
+/* =========================
+   AUTHENTICATION
+========================= */
+
 if (!token || role !== "TRAINEE") {
 
     window.location.href =
         "/login.html";
 }
 
+
 document.getElementById("userName")
     .textContent = name;
 
+
+/* =========================
+   AUTH HEADERS
+========================= */
 
 function authHeaders() {
 
@@ -41,35 +51,48 @@ async function loadAvailableBatches() {
             }
         );
 
+
     if (!response.ok) {
 
-        alert("Unable to load batches.");
+        alert(
+            "Unable to load batches."
+        );
+
         return;
     }
+
 
     const batches =
         await response.json();
 
+
     const enrollments =
         await getMyEnrollments();
+
 
     const enrollmentMap =
         new Map();
 
-    enrollments.forEach(enrollment => {
 
-        enrollmentMap.set(
-            enrollment.batchId,
-            enrollment.status
-        );
-    });
+    enrollments.forEach(
+        enrollment => {
+
+            enrollmentMap.set(
+                enrollment.batchId,
+                enrollment.status
+            );
+        }
+    );
+
 
     const container =
         document.getElementById(
             "availableBatches"
         );
 
+
     container.innerHTML = "";
+
 
     if (batches.length === 0) {
 
@@ -81,89 +104,121 @@ async function loadAvailableBatches() {
         return;
     }
 
-    batches.forEach(batch => {
 
-        const status =
-            enrollmentMap.get(batch.id);
+    batches.forEach(
+        batch => {
 
-        const row =
-            document.createElement("div");
+            const status =
+                enrollmentMap.get(
+                    batch.id
+                );
 
-        row.className = "data-row";
 
-        let action = "";
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-        if (status === "PENDING") {
 
-            action = `
-                <span class="status pending">
-                    PENDING
-                </span>
+            row.className =
+                "data-row";
+
+
+            let action = "";
+
+
+            if (status === "PENDING") {
+
+                action = `
+                    <span class="status pending">
+                        PENDING
+                    </span>
+                `;
+
+            } else if (
+                status === "APPROVED"
+            ) {
+
+                action = `
+                    <span class="status approved">
+                        APPROVED
+                    </span>
+                `;
+
+            } else if (
+                status === "REJECTED"
+            ) {
+
+                action = `
+                    <span class="status declined">
+                        REJECTED
+                    </span>
+                `;
+
+            } else {
+
+                action = `
+                    <button
+                        class="btn small primary"
+                        onclick="requestToJoin(
+                            ${batch.id}
+                        )">
+
+                        Request to Join
+
+                    </button>
+                `;
+            }
+
+
+            row.innerHTML = `
+
+                <div class="data-main">
+
+                    <strong>
+                        ${escapeHtml(
+                batch.name
+            )}
+                    </strong>
+
+                    <span>
+                        ${escapeHtml(
+                batch.courseName
+            )}
+                    </span>
+
+                    <span>
+                        Trainer:
+                        ${escapeHtml(
+                batch.trainerName
+            )}
+                    </span>
+
+                </div>
+
+
+                <div class="batch-dates">
+
+                    ${batch.startDate}
+                    →
+                    ${batch.endDate}
+
+                </div>
+
+
+                <div class="row-actions">
+
+                    ${action}
+
+                </div>
             `;
 
-        } else if (status === "APPROVED") {
 
-            action = `
-                <span class="status approved">
-                    APPROVED
-                </span>
-            `;
-
-        } else if (status === "REJECTED") {
-
-            action = `
-                <span class="status declined">
-                    REJECTED
-                </span>
-            `;
-
-        } else {
-
-            action = `
-                <button
-                    class="btn small primary"
-                    onclick="requestToJoin(${batch.id})">
-                    Request to Join
-                </button>
-            `;
+            container.appendChild(
+                row
+            );
         }
-
-        row.innerHTML = `
-
-            <div class="data-main">
-
-                <strong>
-                    ${batch.name}
-                </strong>
-
-                <span>
-                    ${batch.courseName}
-                </span>
-
-                <span>
-                    Trainer:
-                    ${batch.trainerName}
-                </span>
-
-            </div>
-
-            <div class="batch-dates">
-
-                ${batch.startDate}
-                →
-                ${batch.endDate}
-
-            </div>
-
-            <div class="row-actions">
-
-                ${action}
-
-            </div>
-        `;
-
-        container.appendChild(row);
-    });
+    );
 }
 
 
@@ -171,7 +226,9 @@ async function loadAvailableBatches() {
    REQUEST TO JOIN
 ========================= */
 
-async function requestToJoin(batchId) {
+async function requestToJoin(
+    batchId
+) {
 
     const response =
         await fetch(
@@ -182,8 +239,10 @@ async function requestToJoin(batchId) {
             }
         );
 
+
     const text =
         await response.text();
+
 
     if (!response.ok) {
 
@@ -195,12 +254,16 @@ async function requestToJoin(batchId) {
         return;
     }
 
+
     alert(
         "Enrollment request submitted successfully."
     );
 
+
     await loadAvailableBatches();
+
     await loadMyEnrollments();
+
     await loadMyBatches();
 }
 
@@ -219,10 +282,12 @@ async function getMyEnrollments() {
             }
         );
 
+
     if (!response.ok) {
 
         return [];
     }
+
 
     return response.json();
 }
@@ -237,12 +302,15 @@ async function loadMyEnrollments() {
     const enrollments =
         await getMyEnrollments();
 
+
     const container =
         document.getElementById(
             "myEnrollments"
         );
 
+
     container.innerHTML = "";
+
 
     if (enrollments.length === 0) {
 
@@ -254,45 +322,67 @@ async function loadMyEnrollments() {
         return;
     }
 
-    enrollments.forEach(enrollment => {
 
-        const row =
-            document.createElement("div");
+    enrollments.forEach(
+        enrollment => {
 
-        row.className = "data-row";
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-        row.innerHTML = `
 
-            <div class="data-main">
+            row.className =
+                "data-row";
 
-                <strong>
-                    ${enrollment.batchName}
-                </strong>
 
-                <span>
-                    ${enrollment.courseName}
+            row.innerHTML = `
+
+                <div class="data-main">
+
+                    <strong>
+                        ${escapeHtml(
+                enrollment.batchName
+            )}
+                    </strong>
+
+                    <span>
+                        ${escapeHtml(
+                enrollment.courseName
+            )}
+                    </span>
+
+                </div>
+
+
+                <div class="batch-dates">
+
+                    ${enrollment.startDate}
+                    →
+                    ${enrollment.endDate}
+
+                </div>
+
+
+                <span
+                    class="status
+                    ${String(
+                enrollment.status
+            ).toLowerCase()}">
+
+                    ${escapeHtml(
+                enrollment.status
+            )}
+
                 </span>
+            `;
 
-            </div>
 
-            <div class="batch-dates">
-
-                ${enrollment.startDate}
-                →
-                ${enrollment.endDate}
-
-            </div>
-
-            <span class="status
-                ${enrollment.status.toLowerCase()}">
-
-                ${enrollment.status}
-
-            </span>
-        `;
-
-        container.appendChild(row);
-    });
+            container.appendChild(
+                row
+            );
+        }
+    );
 }
 
 
@@ -300,12 +390,15 @@ async function loadMyEnrollments() {
    LOAD LECTURES
 ========================= */
 
-async function loadLectures(batchId) {
+async function loadLectures(
+    batchId
+) {
 
     console.log(
         "Loading lectures for batch:",
         batchId
     );
+
 
     const response =
         await fetch(
@@ -314,6 +407,7 @@ async function loadLectures(batchId) {
                 headers: authHeaders()
             }
         );
+
 
     console.log(
         "Lecture API status:",
@@ -326,10 +420,12 @@ async function loadLectures(batchId) {
         const errorText =
             await response.text();
 
+
         console.error(
             "Lecture API failed:",
             errorText
         );
+
 
         return [];
     }
@@ -348,6 +444,84 @@ async function loadLectures(batchId) {
     return lectures;
 }
 
+
+/* =========================
+   GET LECTURE PROGRESS
+========================= */
+
+async function getLectureProgress(
+    lectureId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/trainee/lectures/${lectureId}/progress`,
+                {
+                    headers: authHeaders()
+                }
+            );
+
+
+        console.log(
+            `Progress API status for lecture ${lectureId}:`,
+            response.status
+        );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+
+            console.error(
+                "Progress API failed:",
+                errorText
+            );
+
+
+            return {
+                currentPosition: 0,
+                percentageWatched: 0,
+                completed: false,
+                lastWatchedAt: null
+            };
+        }
+
+
+        const progress =
+            await response.json();
+
+
+        console.log(
+            `Progress for lecture ${lectureId}:`,
+            progress
+        );
+
+
+        return progress;
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load lecture progress:",
+            error
+        );
+
+
+        return {
+            currentPosition: 0,
+            percentageWatched: 0,
+            completed: false,
+            lastWatchedAt: null
+        };
+    }
+}
+
+
 /* =========================
    MY APPROVED BATCHES
 ========================= */
@@ -362,20 +536,25 @@ async function loadMyBatches() {
             }
         );
 
+
     if (!response.ok) {
 
         return;
     }
 
+
     const batches =
         await response.json();
+
 
     const container =
         document.getElementById(
             "myBatches"
         );
 
+
     container.innerHTML = "";
+
 
     if (batches.length === 0) {
 
@@ -387,122 +566,311 @@ async function loadMyBatches() {
         return;
     }
 
+
     /*
-     * We use a normal for...of loop here
-     * because we need await for each
-     * batch's lecture request.
+     * IMPORTANT:
+     * for...of is required because
+     * progress must be fetched
+     * asynchronously for every lecture.
      */
 
     for (const batch of batches) {
 
         const row =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        row.className = "data-row";
+
+        row.className =
+            "data-row trainee-batch-card";
+
+
+        /* =========================
+           LOAD LECTURES
+        ========================= */
 
         const lectures =
             await loadLectures(
                 batch.batchId
             );
 
+
         let lectureHtml = "";
+
 
         if (lectures.length === 0) {
 
             lectureHtml = `
                 <div class="empty-state">
+
                     No lectures uploaded yet.
+
                 </div>
             `;
 
         } else {
 
-            lectureHtml =
-                lectures.map(
-                    lecture => `
+            const lectureItems = [];
+
+
+            /*
+             * Fetch progress for every lecture.
+             */
+
+            for (
+                const lecture of lectures
+                ) {
+
+                const progress =
+                    await getLectureProgress(
+                        lecture.id
+                    );
+
+
+                const percentage =
+                    Math.round(
+                        Number(
+                            progress.percentageWatched
+                        ) || 0
+                    );
+
+
+                const completed =
+                    progress.completed === true;
+
+
+                /* =========================
+                   DETERMINE STATUS
+                ========================= */
+
+                let statusText =
+                    "NOT STARTED";
+
+
+                let statusClass =
+                    "not-started";
+
+
+                if (completed) {
+
+                    statusText =
+                        "COMPLETED";
+
+                    statusClass =
+                        "completed";
+
+                } else if (
+                    percentage > 0
+                ) {
+
+                    statusText =
+                        "IN PROGRESS";
+
+                    statusClass =
+                        "in-progress";
+                }
+
+
+                /* =========================
+                   DETERMINE BUTTON
+                ========================= */
+
+                let buttonText =
+                    "Watch Lecture";
+
+
+                if (completed) {
+
+                    buttonText =
+                        "Watch Again";
+
+                } else if (
+                    percentage > 0
+                ) {
+
+                    buttonText =
+                        "Resume Lecture";
+                }
+
+
+                lectureItems.push(`
 
                     <div class="lecture-item">
 
-                        <div>
+
+                        <div class="lecture-info">
+
 
                             <strong>
+
                                 ${escapeHtml(
-                        lecture.title
-                    )}
+                    lecture.title
+                )}
+
                             </strong>
 
+
                             <p>
+
                                 ${escapeHtml(
-                        lecture.description || ""
-                    )}
+                    lecture.description || ""
+                )}
+
                             </p>
 
+
+                            <!-- PROGRESS BAR -->
+
+                            <div
+                                class="lecture-progress">
+
+
+                                <div
+                                    class="lecture-progress-bar">
+
+
+                                    <div
+                                        class="lecture-progress-fill"
+                                        style="
+                                            width: ${percentage}%;
+                                        ">
+                                    </div>
+
+
+                                </div>
+
+
+                                <span
+                                    class="lecture-progress-text">
+
+                                    ${percentage}%
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- STATUS -->
+
+                            <span
+                                class="
+                                    progress-status
+                                    ${statusClass}
+                                ">
+
+                                ${statusText}
+
+                            </span>
+
+
                         </div>
+
+
+                        <!-- WATCH BUTTON -->
 
                         <button
                             class="btn small primary"
                             onclick="openLecture(
                                 ${lecture.id},
                                 '${escapeForAttribute(
-                        lecture.title
-                    )}',
+                    lecture.title
+                )}',
                                 '${escapeForAttribute(
-                        lecture.description || ""
-                    )}'
+                    lecture.description || ""
+                )}'
                             )">
 
-                            Watch Lecture
+                            ${buttonText}
 
                         </button>
 
+
                     </div>
 
-                `
-                ).join("");
+                `);
+            }
+
+
+            lectureHtml =
+                lectureItems.join("");
         }
+
+
+        /* =========================
+           BATCH HTML
+        ========================= */
 
         row.innerHTML = `
 
-            <div class="data-main">
+            <div class="batch-card-header">
 
-                <strong>
-                    ${escapeHtml(
+
+                <div class="data-main">
+
+                    <strong>
+
+                        ${escapeHtml(
             batch.batchName
         )}
-                </strong>
 
-                <span>
-                    ${escapeHtml(
+                    </strong>
+
+
+                    <span>
+
+                        ${escapeHtml(
             batch.courseName
         )}
+
+                    </span>
+
+                </div>
+
+
+                <div class="batch-dates">
+
+                    ${batch.startDate}
+                    →
+                    ${batch.endDate}
+
+                </div>
+
+
+                <span
+                    class="status approved">
+
+                    APPROVED
+
                 </span>
 
-            </div>
-
-            <div class="batch-dates">
-
-                ${batch.startDate}
-                →
-                ${batch.endDate}
 
             </div>
 
-            <span class="status approved">
-                APPROVED
-            </span>
 
             <div class="lecture-section">
+
 
                 <h3>
                     Lectures
                 </h3>
 
-                ${lectureHtml}
+
+                <div class="lecture-list">
+
+                    ${lectureHtml}
+
+                </div>
+
 
             </div>
         `;
 
-        container.appendChild(row);
+
+        container.appendChild(
+            row
+        );
     }
 }
 
@@ -513,33 +881,65 @@ async function loadMyBatches() {
 
 function escapeHtml(value) {
 
-    if (value === null ||
-        value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
 
         return "";
     }
 
+
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
-function escapeForAttribute(value) {
+function escapeForAttribute(
+    value
+) {
 
-    if (value === null ||
-        value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
 
         return "";
     }
 
+
     return String(value)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/\r?\n/g, "\\n");
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /\r?\n/g,
+            "\\n"
+        );
 }
 
 
@@ -553,13 +953,16 @@ function logout() {
         "edutrack_token"
     );
 
+
     localStorage.removeItem(
         "edutrack_name"
     );
 
+
     localStorage.removeItem(
         "edutrack_role"
     );
+
 
     window.location.href =
         "/login.html";
@@ -578,5 +981,6 @@ async function initialize() {
 
     await loadMyBatches();
 }
+
 
 initialize();

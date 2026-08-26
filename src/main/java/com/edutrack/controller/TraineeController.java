@@ -1,7 +1,9 @@
 package com.edutrack.controller;
 
+import com.edutrack.dto.VideoProgressRequest;
 import com.edutrack.service.EnrollmentService;
 import com.edutrack.service.LectureService;
+import com.edutrack.service.VideoProgressService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,18 +18,20 @@ public class TraineeController {
 
     private final EnrollmentService enrollmentService;
     private final LectureService lectureService;
+    private final VideoProgressService videoProgressService;
 
 
     public TraineeController(
             EnrollmentService enrollmentService,
-            LectureService lectureService
+            LectureService lectureService,
+            VideoProgressService videoProgressService
     ) {
-
         this.enrollmentService =
                 enrollmentService;
-
         this.lectureService =
                 lectureService;
+        this.videoProgressService =
+                videoProgressService;
     }
 
 
@@ -156,5 +160,35 @@ public class TraineeController {
                         "inline; filename=\"lecture.mp4\""
                 )
                 .body(resource);
+    }
+    @GetMapping("/lectures/{lectureId}/progress")
+    public ResponseEntity<?> getLectureProgress(
+            @PathVariable Long lectureId,
+            Authentication authentication
+    ) {
+
+        return ResponseEntity.ok(
+                videoProgressService.getProgress(
+                        authentication.getName(),
+                        lectureId
+                )
+        );
+    }
+
+
+    @PutMapping("/lectures/{lectureId}/progress")
+    public ResponseEntity<?> saveLectureProgress(
+            @PathVariable Long lectureId,
+            @RequestBody VideoProgressRequest request,
+            Authentication authentication
+    ) {
+
+        return ResponseEntity.ok(
+                videoProgressService.saveProgress(
+                        authentication.getName(),
+                        lectureId,
+                        request
+                )
+        );
     }
 }
